@@ -1,5 +1,7 @@
-# sh-monuments
+# Using open data to display monuments 
+This project uses 'Open Data Schleswig-Holstein' to display a list of monuments.
 
+# Setup
 ## Project setup
 ```
 npm install
@@ -15,10 +17,3 @@ npm run serve
 npm run build
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
