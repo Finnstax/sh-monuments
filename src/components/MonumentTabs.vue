@@ -1,7 +1,7 @@
 <template>
   <div class="pb-6">
     <div class="sm:hidden">
-      <label for="tabs" class="sr-only">Select a tab</label>
+      <label for="tabs" class="sr-only">Tab aussuchen</label>
       <select
         id="tabs"
         name="tabs"
