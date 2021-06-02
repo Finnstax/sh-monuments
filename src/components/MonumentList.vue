@@ -1,6 +1,6 @@
 <template>
   <Toggle @toggleVisiblity="updateVisiblity" />
-  <MonumentTabs :reasons="extractedReasoning" />
+  <MonumentTabs @updateActive="updateActive" :reasons="extractedReasoning" />
   <ul
     role="list"
     class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
@@ -85,6 +85,8 @@ export default {
       showOnlyWithImage: true,
       showSlideOver: false,
       detailMonument: "",
+      activeIndex: 0,
+      searchReason: "Alle",
     };
   },
   methods: {
@@ -100,6 +102,10 @@ export default {
     updateVisiblity(val) {
       this.showOnlyWithImage = val;
     },
+    updateActive(label) {
+      this.searchReason = label;
+      console.log(label);
+    },
   },
   mounted() {
     this.$nextTick(function () {
@@ -114,8 +120,16 @@ export default {
       .removeEventListener("scroll", this.handleScroll);
   },
   computed: {
-    filteredMonuments() {
+    filterForImage() {
       var filterMonuments = monuments;
+      if (this.showOnlyWithImage) {
+        filterMonuments = filterMonuments.filter((x) => x.FotoURL);
+      }
+      return filterMonuments;
+    },
+    
+    filteredMonuments() {
+      var filterMonuments = this.filterForImage;
       if (this.showOnlyWithImage) {
         filterMonuments = filterMonuments.filter((x) => x.FotoURL);
       }
@@ -126,14 +140,25 @@ export default {
               this.searchQuery.toLowerCase()
             ) || x.Kreis.toLowerCase().includes(this.searchQuery.toLowerCase())
         )
+        .filter((x) => {
+          if (this.searchReason == "Alle") {
+            return true;
+          }
+
+          let reason = x["Begründung"];
+
+          if (reason && reason.join().includes(this.searchReason)) {
+            return true;
+          }
+        })
         .sort(function () {
           return 0.5 - Math.random();
         });
     },
     extractedReasoning() {
       var counts = {};
-      counts["Alle"] = this.filteredMonuments.length;
-      this.filteredMonuments.forEach((monument) => {
+      counts["Alle"] = this.filterForImage.length;
+      this.filterForImage.forEach((monument) => {
         if (monument["Begründung"]) {
           monument["Begründung"].forEach((element) => {
             counts[element] = counts[element] ? counts[element] + 1 : 1;
@@ -141,7 +166,23 @@ export default {
         }
       });
 
-      return counts;
+      var retArr = [];
+      var count = 0;
+
+      Object.entries(counts).forEach(([key, value]) => {
+        var obj = {
+          label: key,
+          count: value,
+          active: key == this.searchReason ? true : false,
+          index: count,
+        };
+        count++;
+        retArr.push(obj);
+      });
+
+      return retArr.sort((a, b) =>
+        a.label > b.label ? 1 : b.label > a.label ? -1 : 0
+      );
     },
   },
   setup() {

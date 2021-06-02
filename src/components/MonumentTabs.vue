@@ -8,11 +8,11 @@
         class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
       >
         <option
-          v-for="(value, key, index) in reasons"
+          v-for="(reason, index) in reasons"
           :key="index"
-          :selected="false"
+          :selected="reason.active"
         >
-          {{ key }} ({{ value }})
+          {{ reason.label }} {{ reason.count }}
         </option>
       </select>
     </div>
@@ -20,28 +20,29 @@
       <div class="border-b border-gray-200">
         <nav class="-mb-px flex flex-wrap gap-x-5" aria-label="Tabs">
           <a
-            v-for="(value, key, index) in reasons"
+            v-for="(reason, index) in reasons"
             :key="index"
+            @click="updateActive(index, reason.label)"
             href="#"
             :class="[
-              false
+              reason.active
                 ? 'border-indigo-500 text-indigo-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-200',
               'whitespace-nowrap flex py-4 px-1 border-b-2 font-medium text-sm',
             ]"
-            :aria-current="false ? 'page' : undefined"
+            :aria-current="reason.active ? 'page' : undefined"
           >
-            {{ key }}
+            {{ reason.label }}
 
             <span
-              v-if="value"
+              v-if="reason.count"
               :class="[
                 true
                   ? 'bg-indigo-100 text-indigo-600'
                   : 'bg-gray-100 text-gray-900',
                 'hidden ml-2 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block',
               ]"
-              >{{ value }}</span
+              >{{ reason.count }}</span
             >
           </a>
         </nav>
@@ -51,20 +52,18 @@
 </template>
 
 <script>
-const tabs = [
-  { name: "Applied", href: "#", count: "52", current: false },
-  { name: "Phone Screening", href: "#", count: "6", current: false },
-  { name: "Interview", href: "#", count: "4", current: true },
-  { name: "Offer", href: "#", current: false },
-  { name: "Disqualified", href: "#", current: false },
-];
-
 export default {
+  methods: {
+    updateActive(index, label) {
+      this.$emit("updateActive", label);
+    },
+  },
   props: ["reasons"],
   setup() {
-    return {
-      tabs,
-    };
+    return {};
+  },
+  data() {
+    return {};
   },
 };
 </script>
