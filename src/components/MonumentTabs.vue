@@ -18,7 +18,7 @@
     </div>
     <div class="hidden sm:block">
       <div class="border-b border-gray-200">
-        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+        <nav class="-mb-px flex flex-wrap gap-x-5" aria-label="Tabs">
           <a
             v-for="(value, key, index) in reasons"
             :key="index"
@@ -39,7 +39,7 @@
                 true
                   ? 'bg-indigo-100 text-indigo-600'
                   : 'bg-gray-100 text-gray-900',
-                'hidden ml-3 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block',
+                'hidden ml-2 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block',
               ]"
               >{{ value }}</span
             >

@@ -1,11 +1,12 @@
 <template>
+  <Toggle @toggleVisiblity="updateVisiblity" />
   <MonumentTabs :reasons="extractedReasoning" />
   <ul
     role="list"
     class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
   >
     <li
-      v-for="monument in monumentsWithImage.slice(0, limit)"
+      v-for="monument in filteredMonuments.slice(0, limit)"
       :key="monument.Objektnummer"
       class="relative"
     >
@@ -43,7 +44,7 @@
   </ul>
   <div class="flex justify-center pt-5">
     <button
-      v-if="limit < monumentsWithImage.length"
+      v-if="limit < filteredMonuments.length"
       @click="limit += 50"
       type="button"
       class="center mt-2 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -57,26 +58,44 @@
 <script>
 import monuments from "../data/denkmalliste.json";
 import MonumentTabs from "./MonumentTabs.vue";
+import Toggle from "./Toggle.vue";
 import { PlusCircleIcon } from "@heroicons/vue/solid";
 
 export default {
   components: {
     PlusCircleIcon,
     MonumentTabs,
+    Toggle,
   },
   data() {
     return {
-      limit: 100,
+      limit: 50,
+      showOnlyWithImage: true,
     };
   },
+  methods: {
+    updateVisiblity(val) {
+      this.showOnlyWithImage = val;
+    },
+  },
   computed: {
-    monumentsWithImage() {
-      return monuments.filter((x) => x.FotoURL);
+    filteredMonuments() {
+      if (this.showOnlyWithImage) {
+        return monuments
+          .filter((x) => x.FotoURL)
+          .sort(function () {
+            return 0.5 - Math.random();
+          });
+      } else {
+        return monuments.sort(function () {
+          return 0.5 - Math.random();
+        });
+      }
     },
     extractedReasoning() {
       var counts = {};
-      counts["Alle"] = monuments.length;
-      monuments.forEach((monument) => {
+      counts["Alle"] = this.filteredMonuments.length;
+      this.filteredMonuments.forEach((monument) => {
         if (monument["Begründung"]) {
           monument["Begründung"].forEach((element) => {
             counts[element] = counts[element] ? counts[element] + 1 : 1;
