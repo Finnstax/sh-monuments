@@ -1,10 +1,11 @@
 <template>
   <div class="pb-6">
     <div class="sm:hidden">
-      <label for="tabs" class="sr-only">Tab aussuchen</label>
+      <label for="tabs" class="sr-only">Filter</label>
       <select
         id="tabs"
         name="tabs"
+        @change="changeItem($event)"
         class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
       >
         <option
@@ -12,7 +13,7 @@
           :key="index"
           :selected="reason.active"
         >
-          {{ reason.label }} {{ reason.count }}
+          {{ reason.label }} ({{ reason.count }} Einträge)
         </option>
       </select>
     </div>
@@ -22,7 +23,7 @@
           <a
             v-for="(reason, index) in reasons"
             :key="index"
-            @click="updateActive(index, reason.label)"
+            @click="updateActive(reason.label)"
             href="#"
             :class="[
               reason.active
@@ -54,7 +55,12 @@
 <script>
 export default {
   methods: {
-    updateActive(index, label) {
+    changeItem(event) {
+      let str = event.target.value;
+      let strSplit = str.split(" ");
+      this.$emit("updateActive", strSplit[0]);
+    },
+    updateActive(label) {
       this.$emit("updateActive", label);
     },
   },
