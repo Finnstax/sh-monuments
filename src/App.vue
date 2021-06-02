@@ -1,19 +1,3 @@
-<!--
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ]
-  }
-  ```
--->
 <template>
   <div class="h-screen flex overflow-hidden bg-gray-100">
     <TransitionRoot as="template" :show="sidebarOpen">
@@ -173,6 +157,7 @@
                   placeholder="Suche"
                   type="search"
                   name="search"
+                  v-model="searchQuery"
                 />
               </div>
             </form>
@@ -192,7 +177,7 @@
           </div>
           <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
             <div class="py-4">
-              <MonumentList />
+              <MonumentList :searchQuery="searchQuery" />
             </div>
           </div>
         </div>
@@ -217,7 +202,6 @@ import {
   BellIcon,
   HomeIcon,
   MenuAlt2Icon,
-  UsersIcon,
   XIcon,
 } from "@heroicons/vue/outline";
 import { SearchIcon } from "@heroicons/vue/solid";
@@ -225,7 +209,6 @@ import MonumentList from "./components/MonumentList.vue";
 
 const navigation = [
   { name: "Übersicht", href: "#", icon: HomeIcon, current: true },
-  { name: "Administration", href: "#", icon: UsersIcon, current: false },
 ];
 
 export default {
@@ -243,6 +226,11 @@ export default {
     SearchIcon,
     XIcon,
     MonumentList,
+  },
+  data() {
+    return {
+      searchQuery: "",
+    };
   },
   setup() {
     const sidebarOpen = ref(false);

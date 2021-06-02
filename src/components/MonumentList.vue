@@ -62,6 +62,7 @@ import Toggle from "./Toggle.vue";
 import { PlusCircleIcon } from "@heroicons/vue/solid";
 
 export default {
+  props: ["searchQuery"],
   components: {
     PlusCircleIcon,
     MonumentTabs,
@@ -98,17 +99,20 @@ export default {
   },
   computed: {
     filteredMonuments() {
+      var filterMonuments = monuments;
       if (this.showOnlyWithImage) {
-        return monuments
-          .filter((x) => x.FotoURL)
-          .sort(function () {
-            return 0.5 - Math.random();
-          });
-      } else {
-        return monuments.sort(function () {
+        filterMonuments = filterMonuments.filter((x) => x.FotoURL);
+      }
+      return filterMonuments
+        .filter(
+          (x) =>
+            x.Bezeichnung.toLowerCase().includes(
+              this.searchQuery.toLowerCase()
+            ) || x.Kreis.toLowerCase().includes(this.searchQuery.toLowerCase())
+        )
+        .sort(function () {
           return 0.5 - Math.random();
         });
-      }
     },
     extractedReasoning() {
       var counts = {};
