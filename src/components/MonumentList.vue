@@ -74,9 +74,27 @@ export default {
     };
   },
   methods: {
+    handleScroll() {
+      let elm = document.getElementById("main");
+      if (elm.scrollHeight - (elm.scrollTop + elm.clientHeight) < 300) {
+        this.limit += 20;
+      }
+    },
     updateVisiblity(val) {
       this.showOnlyWithImage = val;
     },
+  },
+  mounted() {
+    this.$nextTick(function () {
+      document
+        .getElementById("main")
+        .addEventListener("scroll", this.handleScroll);
+    });
+  },
+  beforeUnmount() {
+    document
+      .getElementById("main")
+      .removeEventListener("scroll", this.handleScroll);
   },
   computed: {
     filteredMonuments() {
