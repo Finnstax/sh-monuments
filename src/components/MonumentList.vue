@@ -8,10 +8,10 @@
     <li
       v-for="monument in filteredMonuments.slice(0, limit)"
       :key="monument.Objektnummer"
-      class="relative"
+      class="relative rounded-b-lg bg-white"
     >
       <div
-        class="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden"
+        class="group block w-full aspect-w-10 aspect-h-7 rounded-t-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden"
       >
         <img
           loading="lazy"
@@ -36,14 +36,23 @@
           >
         </button>
       </div>
-      <p
-        class="mt-2 block text-sm font-medium text-gray-900 truncate pointer-events-none"
-      >
-        {{ monument.Bezeichnung }}
-      </p>
-      <p class="block text-sm font-medium text-gray-500 pointer-events-none">
-        {{ monument.Kreis }}
-      </p>
+      <div class="p-4">
+        <p
+          class="block text-sm font-medium text-gray-900 truncate pointer-events-none"
+        >
+          {{ monument.Bezeichnung }}
+        </p>
+        <p class="block text-sm font-medium text-gray-500 pointer-events-none">
+          {{ monument.Kreis }}
+        </p>
+        <button
+          @click="(showSlideOver = true), (detailMonument = monument)"
+          type="button"
+          class="inline-flex items-center mt-2 px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Details
+        </button>
+      </div>
     </li>
   </ul>
   <SlideOver
