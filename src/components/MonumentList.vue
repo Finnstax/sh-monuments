@@ -26,7 +26,11 @@
           alt=""
           class="object-cover pointer-events-none group-hover:opacity-75"
         />
-        <button type="button" class="absolute inset-0 focus:outline-none">
+        <button
+          @click="(showSlideOver = true), (detailMonument = monument)"
+          type="button"
+          class="absolute inset-0 focus:outline-none"
+        >
           <span class="sr-only"
             >Details anzeigen für {{ monument.Bezeichnung }}</span
           >
@@ -42,6 +46,11 @@
       </p>
     </li>
   </ul>
+  <SlideOver
+    :detailData="detailMonument"
+    @currentState="updateState"
+    :isActive="showSlideOver"
+  />
   <div class="flex justify-center pt-5">
     <button
       v-if="limit < filteredMonuments.length"
@@ -58,6 +67,7 @@
 <script>
 import monuments from "../data/denkmalliste.json";
 import MonumentTabs from "./MonumentTabs.vue";
+import SlideOver from "./SlideOver.vue";
 import Toggle from "./Toggle.vue";
 import { PlusCircleIcon } from "@heroicons/vue/solid";
 
@@ -67,14 +77,20 @@ export default {
     PlusCircleIcon,
     MonumentTabs,
     Toggle,
+    SlideOver,
   },
   data() {
     return {
       limit: 50,
       showOnlyWithImage: true,
+      showSlideOver: false,
+      detailMonument: "",
     };
   },
   methods: {
+    updateState(data) {
+      this.showSlideOver = data;
+    },
     handleScroll() {
       let elm = document.getElementById("main");
       if (elm.scrollHeight - (elm.scrollTop + elm.clientHeight) < 300) {
