@@ -1,9 +1,5 @@
 <template>
-  <MonumentTabs />
-
-  <span v-for="(reason, index) in extractedReasoning" :key="index">
-    {{ reason }}
-  </span>
+  <MonumentTabs :reasons="extractedReasoning" />
   <ul
     role="list"
     class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
@@ -78,17 +74,17 @@ export default {
       return monuments.filter((x) => x.FotoURL);
     },
     extractedReasoning() {
-      let reasons = [];
+      var counts = {};
+      counts["Alle"] = monuments.length;
       monuments.forEach((monument) => {
         if (monument["Begründung"]) {
           monument["Begründung"].forEach((element) => {
-            reasons.indexOf(element) === -1 ? reasons.push(element) : "";
+            counts[element] = counts[element] ? counts[element] + 1 : 1;
           });
         }
       });
-      console.log(reasons);
-      reasons = reasons.sort((a, b) => a - b);
-      return reasons;
+
+      return counts;
     },
   },
   setup() {
