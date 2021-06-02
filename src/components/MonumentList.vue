@@ -95,8 +95,8 @@ export default {
     },
     handleScroll() {
       let elm = document.getElementById("main");
-      if (elm.scrollHeight - (elm.scrollTop + elm.clientHeight) < 300) {
-        this.limit += 20;
+      if (elm.scrollHeight - (elm.scrollTop + elm.clientHeight) < 100) {
+        this.limit += 10;
       }
     },
     updateVisiblity(val) {
@@ -104,7 +104,6 @@ export default {
     },
     updateActive(label) {
       this.searchReason = label;
-      console.log(label);
     },
   },
   mounted() {
@@ -127,19 +126,19 @@ export default {
       }
       return filterMonuments;
     },
-    
-    filteredMonuments() {
+    filterForQuery() {
       var filterMonuments = this.filterForImage;
-      if (this.showOnlyWithImage) {
-        filterMonuments = filterMonuments.filter((x) => x.FotoURL);
-      }
+      return filterMonuments.filter(
+        (x) =>
+          x.Bezeichnung.toLowerCase().includes(
+            this.searchQuery.toLowerCase()
+          ) || x.Kreis.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    },
+    filteredMonuments() {
+      var filterMonuments = this.filterForQuery;
+
       return filterMonuments
-        .filter(
-          (x) =>
-            x.Bezeichnung.toLowerCase().includes(
-              this.searchQuery.toLowerCase()
-            ) || x.Kreis.toLowerCase().includes(this.searchQuery.toLowerCase())
-        )
         .filter((x) => {
           if (this.searchReason == "Alle") {
             return true;
@@ -157,8 +156,8 @@ export default {
     },
     extractedReasoning() {
       var counts = {};
-      counts["Alle"] = this.filterForImage.length;
-      this.filterForImage.forEach((monument) => {
+      counts["Alle"] = this.filterForQuery.length;
+      this.filterForQuery.forEach((monument) => {
         if (monument["Begründung"]) {
           monument["Begründung"].forEach((element) => {
             counts[element] = counts[element] ? counts[element] + 1 : 1;
