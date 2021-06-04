@@ -231,7 +231,6 @@ import {
 } from "@heroicons/vue/outline";
 import { SearchIcon } from "@heroicons/vue/solid";
 import MonumentList from "./components/MonumentList.vue";
-import Notice from "./components/Notice.vue";
 
 const navigation = [
   { name: "Übersicht", href: "#", icon: HomeIcon, current: true },
@@ -251,8 +250,7 @@ export default {
     MenuAlt2Icon,
     SearchIcon,
     XIcon,
-    MonumentList,
-    Notice
+    MonumentList
   },
   data() {
     return {
