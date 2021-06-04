@@ -94,6 +94,10 @@
                         :label="'Begründung'"
                         :field="monument.Begründung"
                       />
+                        <DetailField
+                        :label="'Beschreibung'"
+                        :field="monument.Beschreibung"
+                      />
                       <DetailField
                         :label="'Kulturdenkmaltyp'"
                         :field="monument.Kulturdenkmaltyp"

@@ -131,7 +131,7 @@
       </div>
     </div>
     <div class="flex flex-col w-0 flex-1 overflow-hidden">
-      <div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
+      <div class="relative z-10 flex-shrink-0 flex h-16 md:h-0 bg-white shadow md:invisible">
         <button
           class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
           @click="sidebarOpen = true"
@@ -139,7 +139,7 @@
           <span class="sr-only">Open sidebar</span>
           <MenuAlt2Icon class="h-6 w-6" aria-hidden="true" />
         </button>
-        <div class="flex-1 px-4 flex justify-between">
+        <div class="flex-1 px-4 flex justify-between md:invisible">
           <div class="flex-1 flex">
             <form class="w-full flex md:ml-0" action="#" method="GET">
               <label for="search_field" class="sr-only">Suche</label>
@@ -154,7 +154,7 @@
                 <input
                   id="search_field"
                   class="block w-full h-full pl-8 pr-3 py-2 border-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent sm:text-sm"
-                  placeholder="Suche"
+                  placeholder="Suche nach Region, Art, Merkmal"
                   type="search"
                   name="search"
                   v-model="searchQuery"
@@ -170,11 +170,36 @@
         class="flex-1 relative overflow-y-auto focus:outline-none"
       >
         <div class="py-6">
-          <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 md:mt-12 md:mb-6">
             <h1 class="text-2xl font-semibold text-gray-900">
-              Denkmale in Schleswig-Holstein
+              Denkmäler in Schleswig-Holstein
             </h1>
           </div>
+          <div class=" max-w-7xl mx-auto px-4 sm:px-6 md:px-8 flex-1 flex justify-between invisible hidden md:block md:visible">
+            <div class="flex-1 flex">
+              <form class="w-full flex md:ml-0" action="#" method="GET">
+                <label for="search_field" class="sr-only">Suche</label>
+                <div
+                  class="relative w-full text-gray-400 focus-within:text-gray-600"
+                >
+                  <div
+                    class="absolute inset-y-0 left-0 flex items-center pointer-events-none"
+                  >
+                    <SearchIcon class="ml-5 h-5 w-5" aria-hidden="true" />
+                  </div>
+                  <input
+                    id="search_field"
+                    class="block w-full rounded h-full pl-14 py-4 px-4 border-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent sm:text-sm"
+                    placeholder="Suche nach Region, Art, Merkmal"
+                    type="search"
+                    name="search"
+                    v-model="searchQuery"
+                  />
+                </div>
+              </form>
+            </div>
+          </div>
+      
           <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
             <div class="py-4">
               <MonumentList :searchQuery="searchQuery" />
@@ -206,6 +231,7 @@ import {
 } from "@heroicons/vue/outline";
 import { SearchIcon } from "@heroicons/vue/solid";
 import MonumentList from "./components/MonumentList.vue";
+import Notice from "./components/Notice.vue";
 
 const navigation = [
   { name: "Übersicht", href: "#", icon: HomeIcon, current: true },
@@ -226,6 +252,7 @@ export default {
     SearchIcon,
     XIcon,
     MonumentList,
+    Notice
   },
   data() {
     return {
