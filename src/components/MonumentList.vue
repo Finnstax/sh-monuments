@@ -113,7 +113,6 @@ export default {
     },
     updateActive(label) {
       this.searchReason = label;
-      console.log(label);
     },
   },
   mounted() {
